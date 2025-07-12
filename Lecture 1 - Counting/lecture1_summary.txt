@@ -4,6 +4,7 @@ STANFORD CS109 - PROBABILITY FOR COMPUTER SCIENTISTS
 LECTURE 1: COUNTING
 ===================
 
+
 OVERVIEW
 --------
 Counting is the foundation of probability theory. Before we can calculate probabilities, 
