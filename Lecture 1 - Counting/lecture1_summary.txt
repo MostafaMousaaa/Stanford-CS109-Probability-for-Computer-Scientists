@@ -1,0 +1,214 @@
+STANFORD CS109 - PROBABILITY FOR COMPUTER SCIENTISTS
+====================================================
+
+LECTURE 1: COUNTING
+===================
+
+OVERVIEW
+--------
+Counting is the foundation of probability theory. Before we can calculate probabilities, 
+we need to understand how to count the number of possible outcomes in various scenarios.
+
+KEY CONCEPTS
+------------
+
+1. BASIC COUNTING PRINCIPLES
+   - Multiplication Principle
+   - Addition Principle
+   - Subtraction Principle
+
+2. PERMUTATIONS AND COMBINATIONS
+   - Permutations (order matters)
+   - Combinations (order doesn't matter)
+   - Permutations with repetition
+   - Combinations with repetition
+
+3. SPECIAL COUNTING TECHNIQUES
+   - Stars and Bars method
+   - Inclusion-Exclusion Principle
+   - Pigeonhole Principle
+
+DETAILED EXPLANATIONS
+====================
+
+1. MULTIPLICATION PRINCIPLE
+   If there are n ways to do the first task and m ways to do the second task, 
+   then there are n × m ways to do both tasks.
+
+   Example: If you have 3 shirts and 4 pants, you have 3 × 4 = 12 possible outfits.
+
+2. ADDITION PRINCIPLE
+   If task A can be done in n ways and task B can be done in m ways, 
+   and A and B are mutually exclusive, then A or B can be done in n + m ways.
+
+   Example: If you can take 5 different routes to work or 3 different routes home, 
+   you have 5 + 3 = 8 total route options.
+
+3. PERMUTATIONS
+   A permutation is an arrangement of objects where order matters.
+   P(n,r) = n!/(n-r)! = n × (n-1) × (n-2) × ... × (n-r+1)
+
+   Example: How many ways can you arrange 3 books on a shelf from 5 books?
+   P(5,3) = 5!/(5-3)! = 5!/2! = 120/2 = 60 ways
+
+4. COMBINATIONS
+   A combination is a selection of objects where order doesn't matter.
+   C(n,r) = n!/(r!(n-r)!) = P(n,r)/r!
+
+   Example: How many ways can you choose 3 books from 5 books?
+   C(5,3) = 5!/(3!2!) = 120/(6×2) = 10 ways
+
+5. PERMUTATIONS WITH REPETITION
+   When objects can be repeated: n^r
+
+   Example: How many 3-digit numbers can be formed using digits 0-9?
+   10^3 = 1000 numbers
+
+6. COMBINATIONS WITH REPETITION
+   Stars and Bars method: C(n+r-1, r)
+
+   Example: How many ways can you distribute 10 identical candies to 3 children?
+   C(10+3-1, 10) = C(12, 10) = C(12, 2) = 66 ways
+
+7. INCLUSION-EXCLUSION PRINCIPLE
+   |A ∪ B| = |A| + |B| - |A ∩ B|
+   |A ∪ B ∪ C| = |A| + |B| + |C| - |A ∩ B| - |A ∩ C| - |B ∩ C| + |A ∩ B ∩ C|
+
+8. PIGEONHOLE PRINCIPLE
+   If n items are put into m containers with n > m, then at least one container 
+   must contain more than one item.
+
+CODE EXAMPLES
+=============
+
+Python Implementation of Counting Functions:
+
+import math
+from itertools import permutations, combinations
+
+def factorial(n):
+    """Calculate n!"""
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n-1)
+
+def permutation(n, r):
+    """Calculate P(n,r) = n!/(n-r)!"""
+    if r > n:
+        return 0
+    return factorial(n) // factorial(n-r)
+
+def combination(n, r):
+    """Calculate C(n,r) = n!/(r!(n-r)!)"""
+    if r > n:
+        return 0
+    return factorial(n) // (factorial(r) * factorial(n-r))
+
+def permutation_with_repetition(n, r):
+    """Calculate n^r"""
+    return n ** r
+
+def combination_with_repetition(n, r):
+    """Calculate C(n+r-1, r)"""
+    return combination(n + r - 1, r)
+
+# Example 1: Basic Counting
+print("=== BASIC COUNTING EXAMPLES ===")
+print(f"5! = {factorial(5)}")
+print(f"P(5,3) = {permutation(5,3)}")
+print(f"C(5,3) = {combination(5,3)}")
+print(f"3-digit numbers: {permutation_with_repetition(10,3)}")
+
+# Example 2: Password Combinations
+print("\n=== PASSWORD EXAMPLE ===")
+# How many 4-character passwords using letters a-z?
+letters = 26
+password_length = 4
+total_passwords = permutation_with_repetition(letters, password_length)
+print(f"4-character passwords using a-z: {total_passwords:,}")
+
+# Example 3: Committee Selection
+print("\n=== COMMITTEE SELECTION ===")
+# How many ways to select a committee of 3 from 10 people?
+people = 10
+committee_size = 3
+ways_to_select = combination(people, committee_size)
+print(f"Ways to select committee of 3 from 10 people: {ways_to_select}")
+
+# Example 4: Candy Distribution
+print("\n=== CANDY DISTRIBUTION ===")
+# How many ways to distribute 8 identical candies to 4 children?
+candies = 8
+children = 4
+distribution_ways = combination_with_repetition(children, candies)
+print(f"Ways to distribute {candies} candies to {children} children: {distribution_ways}")
+
+# Example 5: Using itertools for verification
+print("\n=== VERIFICATION WITH ITERTOOLS ===")
+items = ['A', 'B', 'C', 'D']
+r = 2
+
+# Permutations
+perm_list = list(permutations(items, r))
+print(f"Permutations of {items} taken {r} at a time:")
+print(f"Count: {len(perm_list)} (should be {permutation(len(items), r)})")
+print(f"Permutations: {perm_list}")
+
+# Combinations
+comb_list = list(combinations(items, r))
+print(f"\nCombinations of {items} taken {r} at a time:")
+print(f"Count: {len(comb_list)} (should be {combination(len(items), r)})")
+print(f"Combinations: {comb_list}")
+
+PRACTICAL APPLICATIONS
+=====================
+
+1. COMPUTER SCIENCE APPLICATIONS:
+   - Password strength calculation
+   - Algorithm complexity analysis
+   - Database query optimization
+   - Network routing problems
+   - Cryptography key space analysis
+
+2. PROBABILITY FOUNDATION:
+   - Sample space enumeration
+   - Event counting for probability calculation
+   - Combinatorial probability problems
+
+3. DATA SCIENCE APPLICATIONS:
+   - Feature selection in machine learning
+   - A/B testing sample size calculation
+   - Survey design and sampling methods
+
+COMMON MISTAKES TO AVOID
+========================
+
+1. Confusing permutations and combinations
+   - Remember: order matters for permutations, not for combinations
+
+2. Forgetting to account for repetition
+   - When objects can be repeated, use different formulas
+
+3. Overcounting or undercounting
+   - Use inclusion-exclusion principle for overlapping sets
+
+4. Ignoring constraints
+   - Always check if there are additional restrictions
+
+5. Not considering symmetry
+   - Sometimes problems can be simplified by recognizing symmetry
+
+EXERCISES TO PRACTICE
+====================
+
+1. How many ways can you arrange the letters in "PROBABILITY"?
+2. In a group of 20 people, how many ways can you form a committee of 5?
+3. How many 5-card poker hands are possible from a 52-card deck?
+4. How many ways can you distribute 15 identical balls into 6 boxes?
+5. How many 4-digit numbers can be formed using digits 1-9 with no repetition?
+
+These counting principles form the foundation for understanding probability, 
+which is essential for computer science applications like machine learning, 
+data analysis, and algorithm design. 
